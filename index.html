@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ONEP - Gestion Commerciale</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="logo">
+                <i class="fas fa-tint fa-2x" style="color: var(--secondary);"></i>
+                <h2>ONEP Commercial</h2>
+            </div>
+            <ul class="nav-links">
+                <li class="active" data-tab="dashboard">
+                    <a href="#"><i class="fas fa-chart-bar"></i> Tableau de Bord</a>
+                </li>
+                <li data-tab="clients">
+                    <a href="#"><i class="fas fa-users"></i> Clients</a>
+                </li>
+                <li data-tab="commandes">
+                    <a href="#"><i class="fas fa-shopping-cart"></i> Commandes</a>
+                </li>
+                <li data-tab="recouvrement">
+                    <a href="#"><i class="fas fa-hand-holding-usd"></i> Recouvrement</a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Header -->
+            <header>
+                <h1 id="page-title">Tableau de Bord Commercial</h1>
+                <div class="user-info">
+                    <div>
+                        <div>Stagiaire ONEP</div>
+                        <div style="font-size: 0.9rem; color: #666;">Service Commercial</div>
+                    </div>
+                    <div class="user-avatar">ON</div>
+                </div>
+            </header>
+
+            <!-- Content -->
+            <div class="content">
+                <!-- Dashboard -->
+                <div id="dashboard" class="tab-content active">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div>Clients Actifs</div>
+                            <div class="stat-value" id="total-clients">0</div>
+                            <div style="color: #666; font-size: 0.9rem;">Clients ONEP</div>
+                        </div>
+                        <div class="stat-card">
+                            <div>Chiffre d'Affaires</div>
+                            <div class="stat-value" id="total-revenue">0 DH</div>
+                            <div style="color: #666; font-size: 0.9rem;">Ce mois</div>
+                        </div>
+                        <div class="stat-card">
+                            <div>Commandes en Cours</div>
+                            <div class="stat-value" id="active-orders">0</div>
+                            <div style="color: #666; font-size: 0.9rem;">À traiter</div>
+                        </div>
+                        <div class="stat-card">
+                            <div>Retards de Paiement</div>
+                            <div class="stat-value" id="overdue-amount">0 DH</div>
+                            <div style="color: #666; font-size: 0.9rem;">En souffrance</div>
+                        </div>
+                    </div>
+
+                    <div class="data-table">
+                        <div class="table-header">
+                            <i class="fas fa-history"></i> Dernières Commandes
+                        </div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>N° Commande</th>
+                                    <th>Client</th>
+                                    <th>Service</th>
+                                    <th>Montant</th>
+                                    <th>Statut</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recent-orders">
+                                <tr><td colspan="5" style="text-align: center; padding: 40px;">Chargement...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Clients -->
+                <div id="clients" class="tab-content">
+                    <div class="form-container">
+                        <h2 class="form-title">
+                            <i class="fas fa-user-plus"></i> Nouveau Client
+                        </h2>
+                        <form id="client-form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Nom du Client *</label>
+                                    <input type="text" class="form-control" id="client-name" required placeholder="Entrez le nom du client">
+                                </div>
+                                <div class="form-group">
+                                    <label>Email *</label>
+                                    <input type="email" class="form-control" id="client-email" required placeholder="email@exemple.com">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Téléphone</label>
+                                    <input type="tel" class="form-control" id="client-phone" placeholder="+212 XXX XXX XXX">
+                                </div>
+                                <div class="form-group">
+                                    <label>Adresse</label>
+                                    <input type="text" class="form-control" id="client-address" placeholder="Adresse complète">
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-success" id="submit-client">
+                                <i class="fas fa-save"></i> Enregistrer le Client
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="data-table">
+                        <div class="table-header">
+                            <i class="fas fa-list"></i> Liste des Clients
+                        </div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Nom</th>
+                                    <th>Email</th>
+                                    <th>Téléphone</th>
+                                    <th>Adresse</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="clients-list">
+                                <tr><td colspan="5" style="text-align: center; padding: 40px;">Chargement...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Commandes -->
+                <div id="commandes" class="tab-content">
+                    <div class="form-container">
+                        <h2 class="form-title">
+                            <i class="fas fa-shopping-cart"></i> Nouvelle Commande
+                        </h2>
+                        <form id="order-form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Client *</label>
+                                    <select class="form-control" id="order-client" required>
+                                        <option value="">Sélectionner un client</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Service *</label>
+                                    <select class="form-control" id="order-service" required>
+                                        <option value="">Choisir un service</option>
+                                        <option value="Eau Résidentielle">Eau Résidentielle - 250 DH/mois</option>
+                                        <option value="Eau Professionnelle">Eau Professionnelle - 800 DH/mois</option>
+                                        <option value="Electricité Résidentielle">Électricité Résidentielle - 350 DH/mois</option>
+                                        <option value="Electricité Professionnelle">Électricité Professionnelle - 1200 DH/mois</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Quantité</label>
+                                    <input type="number" class="form-control" id="order-quantity" value="1" min="1">
+                                </div>
+                                <div class="form-group">
+                                    <label>Notes</label>
+                                    <textarea class="form-control" id="order-notes" rows="2" placeholder="Notes supplémentaires..."></textarea>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-success" id="submit-order">
+                                <i class="fas fa-check"></i> Créer la Commande
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="data-table">
+                        <div class="table-header">
+                            <i class="fas fa-history"></i> Historique des Commandes
+                        </div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>N° Commande</th>
+                                    <th>Client</th>
+                                    <th>Service</th>
+                                    <th>Montant</th>
+                                    <th>Date</th>
+                                    <th>Statut</th>
+                                </tr>
+                            </thead>
+                            <tbody id="orders-list">
+                                <tr><td colspan="6" style="text-align: center; padding: 40px;">Chargement...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Recouvrement -->
+                <div id="recouvrement" class="tab-content">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div>Factures en Retard</div>
+                            <div class="stat-value" id="overdue-count">0</div>
+                            <div style="color: #666; font-size: 0.9rem;">À recouvrer</div>
+                        </div>
+                        <div class="stat-card">
+                            <div>Montant Total</div>
+                            <div class="stat-value" id="overdue-total">0 DH</div>
+                            <div style="color: #666; font-size: 0.9rem;">En souffrance</div>
+                        </div>
+                        <div class="stat-card">
+                            <div>Clients Concernés</div>
+                            <div class="stat-value" id="overdue-clients">0</div>
+                            <div style="color: #666; font-size: 0.9rem;">En retard</div>
+                        </div>
+                    </div>
+
+                    <div class="data-table">
+                        <div class="table-header">
+                            <i class="fas fa-exclamation-triangle"></i> Factures en Retard
+                        </div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>N° Facture</th>
+                                    <th>Client</th>
+                                    <th>Échéance</th>
+                                    <th>Jours Retard</th>
+                                    <th>Montant</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="overdue-invoices">
+                                <tr><td colspan="6" style="text-align: center; padding: 40px;">Chargement...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal pour modifier client -->
+    <div class="modal" id="editModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-edit"></i> Modifier le Client</h3>
+                <button type="button" class="btn btn-sm" onclick="closeModal()" style="background: none; border: none; font-size: 1.5rem; cursor: pointer;">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="edit-client-form">
+                    <input type="hidden" id="edit-client-id">
+                    <div class="form-group">
+                        <label>Nom du Client *</label>
+                        <input type="text" class="form-control" id="edit-client-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email *</label>
+                        <input type="email" class="form-control" id="edit-client-email" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Téléphone</label>
+                        <input type="tel" class="form-control" id="edit-client-phone">
+                    </div>
+                    <div class="form-group">
+                        <label>Adresse</label>
+                        <input type="text" class="form-control" id="edit-client-address">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" onclick="closeModal()">Annuler</button>
+                <button class="btn btn-success" onclick="updateClient()" id="update-client-btn">
+                    <i class="fas fa-save"></i> Enregistrer
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div id="toast" class="toast"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
