@@ -1,5 +1,5 @@
 // =============================================
-// قاعدة البيانات مع LocalStorage
+// BASE DE DONNÉES AVEC LOCALSTORAGE
 // =============================================
 
 class Database {
@@ -8,7 +8,7 @@ class Database {
     }
 
     initDatabase() {
-        // إذا لم توجد بيانات، أنشئ بيانات تجريبية
+        // Si pas de données, créer des données d'exemple
         if (!localStorage.getItem('onep_clients')) {
             const sampleData = {
                 clients: [
@@ -100,7 +100,7 @@ class Database {
         if (data.factures) localStorage.setItem('onep_factures', JSON.stringify(data.factures));
     }
 
-    // ==================== العملاء ====================
+    // ==================== CLIENTS ====================
     async getClients() {
         return new Promise((resolve) => {
             const clients = JSON.parse(localStorage.getItem('onep_clients')) || [];
@@ -144,7 +144,7 @@ class Database {
         });
     }
 
-    // ==================== الطلبات ====================
+    // ==================== COMMANDES ====================
     async getCommandes() {
         return new Promise((resolve) => {
             const commandes = JSON.parse(localStorage.getItem('onep_commandes')) || [];
@@ -177,7 +177,7 @@ class Database {
         });
     }
 
-    // ==================== الفواتير ====================
+    // ==================== FACTURES ====================
     async getFactures() {
         return new Promise((resolve) => {
             const factures = JSON.parse(localStorage.getItem('onep_factures')) || [];
@@ -199,11 +199,11 @@ class Database {
     }
 }
 
-// إنشاء قاعدة البيانات
+// Initialiser la base de données
 const db = new Database();
 
 // =============================================
-// دوال مساعدة
+// FONCTIONS UTILITAIRES
 // =============================================
 
 function escapeHtml(text) {
@@ -238,7 +238,7 @@ function showToast(message, type = 'success') {
 }
 
 // =============================================
-// إدارة النافذة المنبثقة
+// GESTION DES MODALES
 // =============================================
 
 function openModal() {
@@ -256,7 +256,7 @@ document.getElementById('editModal').addEventListener('click', function(e) {
 });
 
 // =============================================
-// التنقل بين الأقسام
+// NAVIGATION
 // =============================================
 
 function setupNavigation() {
@@ -268,7 +268,8 @@ function setupNavigation() {
         'dashboard': 'Tableau de Bord Commercial',
         'clients': 'Gestion des Clients',
         'commandes': 'Gestion des Commandes',
-        'recouvrement': 'Module de Recouvrement'
+        'recouvrement': 'Module de Recouvrement',
+        'database': 'Base de Données'
     };
     
     navItems.forEach(item => {
@@ -302,11 +303,14 @@ function loadTabData(tabId) {
         case 'recouvrement':
             loadRecouvrement();
             break;
+        case 'database':
+            loadDatabaseView();
+            break;
     }
 }
 
 // =============================================
-// لوحة التحكم
+// TABLEAU DE BORD
 // =============================================
 
 async function loadDashboard() {
@@ -354,7 +358,7 @@ async function loadDashboard() {
 }
 
 // =============================================
-// إدارة العملاء
+// GESTION DES CLIENTS
 // =============================================
 
 async function loadClients() {
@@ -390,7 +394,7 @@ async function loadClients() {
     }
 }
 
-// إضافة عميل
+// Ajouter client
 document.getElementById('client-form').addEventListener('submit', async function(e) {
     e.preventDefault();
     
@@ -432,7 +436,7 @@ document.getElementById('client-form').addEventListener('submit', async function
     }
 });
 
-// تعديل عميل
+// Modifier client
 function editClient(id, nom, email, telephone, adresse) {
     const decodedNom = unescapeSingleQuotes(nom);
     const decodedEmail = unescapeSingleQuotes(email);
@@ -486,7 +490,7 @@ async function updateClient() {
     }
 }
 
-// حذف عميل
+// Supprimer client
 async function deleteClient(clientID) {
     if (!confirm('Êtes-vous sûr de vouloir supprimer ce client ? Cette action est irréversible.')) {
         return;
@@ -510,7 +514,7 @@ async function deleteClient(clientID) {
 }
 
 // =============================================
-// إدارة الطلبات
+// GESTION DES COMMANDES
 // =============================================
 
 async function loadClientsForOrders() {
@@ -557,7 +561,7 @@ async function loadOrders() {
     }
 }
 
-// إنشاء طلب
+// Créer commande
 document.getElementById('order-form').addEventListener('submit', async function(e) {
     e.preventDefault();
     
@@ -606,7 +610,7 @@ document.getElementById('order-form').addEventListener('submit', async function(
 });
 
 // =============================================
-// إدارة التحصيل
+// GESTION DU RECOUVREMENT
 // =============================================
 
 async function loadRecouvrement() {
@@ -650,7 +654,7 @@ async function loadRecouvrement() {
     }
 }
 
-// تعليم كمدفوع
+// Marquer comme payé
 async function markAsPaid(factureID) {
     if (!confirm('Marquer cette facture comme payée ? Cette action mettra à jour son statut.')) {
         return;
@@ -672,10 +676,173 @@ async function markAsPaid(factureID) {
 }
 
 // =============================================
-// التهيئة
+// BASE DE DONNÉES VIEWER
 // =============================================
 
-document.addEventListener('DOMContentLoaded', function() {
+async function loadDatabaseView() {
+    try {
+        const clients = await db.getClients();
+        const orders = await db.getCommandes();
+        const invoices = await db.getFactures();
+
+        // Update stats
+        document.getElementById('db-clients-count').textContent = clients.length;
+        document.getElementById('db-orders-count').textContent = orders.length;
+        document.getElementById('db-invoices-count').textContent = invoices.length;
+
+        // Update clients table
+        const clientsTable = document.getElementById('db-clients-table');
+        if (clients.length === 0) {
+            clientsTable.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 20px;">Aucun client</td></tr>';
+        } else {
+            clientsTable.innerHTML = clients.map(client => `
+                <tr>
+                    <td><code>${client.id}</code></td>
+                    <td><strong>${escapeHtml(client.Nom)}</strong></td>
+                    <td>${escapeHtml(client.Email)}</td>
+                    <td>${escapeHtml(client.Telephone || '-')}</td>
+                    <td>${escapeHtml(client.Adresse || '-')}</td>
+                    <td>${new Date(client.DateCreation).toLocaleDateString('fr-FR')}</td>
+                </tr>
+            `).join('');
+        }
+
+        // Update orders table
+        const ordersTable = document.getElementById('db-orders-table');
+        if (orders.length === 0) {
+            ordersTable.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 20px;">Aucune commande</td></tr>';
+        } else {
+            ordersTable.innerHTML = orders.map(order => `
+                <tr>
+                    <td><code>${order.id}</code></td>
+                    <td><strong>${escapeHtml(order.NumeroCommande)}</strong></td>
+                    <td>${escapeHtml(order.NomClient)}</td>
+                    <td>${escapeHtml(order.Service)}</td>
+                    <td><strong>${formatNumber(parseFloat(order.Montant))} DH</strong></td>
+                    <td>
+                        <span class="badge ${order.Statut === 'Livrée' ? 'badge-success' : order.Statut === 'En cours' ? 'badge-warning' : 'badge-danger'}">
+                            ${order.Statut}
+                        </span>
+                    </td>
+                    <td>${new Date(order.DateCommande).toLocaleDateString('fr-FR')}</td>
+                </tr>
+            `).join('');
+        }
+
+        // Update invoices table
+        const invoicesTable = document.getElementById('db-invoices-table');
+        if (invoices.length === 0) {
+            invoicesTable.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 20px;">Aucune facture</td></tr>';
+        } else {
+            invoicesTable.innerHTML = invoices.map(invoice => `
+                <tr>
+                    <td><code>${invoice.id}</code></td>
+                    <td><strong>${escapeHtml(invoice.NumeroFacture)}</strong></td>
+                    <td>${escapeHtml(invoice.NomClient)}</td>
+                    <td><strong>${formatNumber(parseFloat(invoice.Montant))} DH</strong></td>
+                    <td>${new Date(invoice.DateEcheance).toLocaleDateString('fr-FR')}</td>
+                    <td>
+                        <span class="badge ${invoice.StatutPaiement === 'Payée' ? 'badge-success' : 'badge-danger'}">
+                            ${invoice.StatutPaiement}
+                        </span>
+                    </td>
+                    <td>
+                        <span class="badge badge-danger">
+                            ${invoice.JoursRetard} jour${invoice.JoursRetard > 1 ? 's' : ''}
+                        </span>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+    } catch (error) {
+        console.error('Erreur chargement vue base de données:', error);
+        showToast('Erreur lors du chargement de la base de données', 'error');
+    }
+}
+
+function refreshDatabaseView() {
+    loadDatabaseView();
+    showToast('Base de données actualisée!');
+}
+
+function exportDatabase() {
+    const data = {
+        clients: JSON.parse(localStorage.getItem('onep_clients') || '[]'),
+        commandes: JSON.parse(localStorage.getItem('onep_commandes') || '[]'),
+        factures: JSON.parse(localStorage.getItem('onep_factures') || '[]'),
+        exportDate: new Date().toISOString(),
+        totalRecords: JSON.parse(localStorage.getItem('onep_clients') || '[]').length + 
+                     JSON.parse(localStorage.getItem('onep_commandes') || '[]').length + 
+                     JSON.parse(localStorage.getItem('onep_factures') || '[]').length
+    };
+    
+    const dataStr = JSON.stringify(data, null, 2);
+    const blob = new Blob([dataStr], {type: 'application/json'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `onep-database-${new Date().toISOString().split('T')[0]}.json`;
+    a.click();
+    
+    showToast('Base de données exportée!');
+}
+
+// =============================================
+// AUTHENTIFICATION SIMPLE
+// =============================================
+
+document.getElementById('loginForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+    
+    if (username === 'admin' && password === 'admin123') {
+        document.body.classList.add('logged-in');
+        showToast('Connexion réussie! Bienvenue Admin.', 'success');
+        updateUserInterface();
+        initializeApp();
+    } else {
+        showToast('Identifiants incorrects!', 'error');
+    }
+});
+
+function updateUserInterface() {
+    const userInfo = document.querySelector('.user-info');
+    userInfo.innerHTML = `
+        <div class="user-details">
+            <div class="user-name">Directeur Commercial</div>
+            <div class="user-role">Administrateur</div>
+        </div>
+        <div class="user-avatar">DC</div>
+        <button class="btn btn-sm btn-outline logout-btn" onclick="logout()">
+            <i class="fas fa-sign-out-alt"></i> Déconnexion
+        </button>
+    `;
+}
+
+function logout() {
+    if (confirm('Êtes-vous sûr de vouloir vous déconnecter ?')) {
+        document.body.classList.remove('logged-in');
+        showToast('Déconnexion réussie', 'success');
+        setTimeout(() => {
+            document.querySelector('.user-info').innerHTML = `
+                <div class="user-details">
+                    <div class="user-name">Non Connecté</div>
+                    <div class="user-role">Veuillez vous identifier</div>
+                </div>
+                <div class="user-avatar">ON</div>
+            `;
+        }, 1000);
+    }
+}
+
+// =============================================
+// INITIALISATION
+// =============================================
+
+function initializeApp() {
     setupNavigation();
     loadClientsForOrders();
     loadDashboard();
@@ -684,10 +851,39 @@ document.addEventListener('DOMContentLoaded', function() {
     loadOrders();
     loadRecouvrement();
     
-    console.log('Application ONEP Commercial initialisée avec succès');
+    console.log('✅ Application ONEP Commercial initialisée avec succès');
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('🚀 ONEP Commercial - Chargement...');
 });
 
 window.addEventListener('error', function(e) {
     console.error('Erreur globale:', e.error);
     showToast('Une erreur inattendue est survenue', 'error');
+});
+// =============================================
+// LECTEUR DE BASE DE DONNÉES - INTÉGRATION SIMPLE
+// =============================================
+
+function addDatabaseReaderButton() {
+    // Attendre que l'application soit chargée
+    setTimeout(() => {
+        const dbReaderBtn = document.createElement('button');
+        dbReaderBtn.className = 'db-reader-btn';
+        dbReaderBtn.innerHTML = '<i class="fas fa-network-wired"></i>';
+        dbReaderBtn.title = 'Lecteur de Base de Données';
+        dbReaderBtn.onclick = showDatabaseReader;
+        
+        document.body.appendChild(dbReaderBtn);
+    }, 1000);
+}
+
+function showDatabaseReader() {
+    dbReaderUI.showDatabaseReader();
+}
+
+// Initialiser le bouton quand l'application est prête
+document.addEventListener('DOMContentLoaded', function() {
+    addDatabaseReaderButton();
 });
