@@ -4,442 +4,55 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ONEP - Gestion Commerciale</title>
+    <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root {
-            --primary: #2c5aa0;
-            --secondary: #00a79d;
-            --accent: #e74c3c;
-            --success: #27ae60;
-            --warning: #f39c12;
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
-        body {
-            background: #f5f7fa;
-            color: #333;
-        }
-        
-        .container {
-            display: flex;
-            min-height: 100vh;
-        }
-        
-        /* Sidebar */
-        .sidebar {
-            width: 250px;
-            background: var(--primary);
-            color: white;
-            padding: 20px 0;
-        }
-        
-        .logo {
-            text-align: center;
-            padding: 20px;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-        
-        .logo h2 {
-            font-size: 1.3rem;
-            margin-top: 10px;
-        }
-        
-        .nav-links {
-            padding: 20px 0;
-        }
-        
-        .nav-links li {
-            list-style: none;
-            padding: 15px 25px;
-            cursor: pointer;
-            transition: all 0.3s;
-            border-left: 4px solid transparent;
-        }
-        
-        .nav-links li.active {
-            background: rgba(255,255,255,0.1);
-            border-left-color: var(--secondary);
-        }
-        
-        .nav-links li:hover {
-            background: rgba(255,255,255,0.05);
-        }
-        
-        .nav-links a {
-            color: white;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        /* Main Content */
-        .main-content {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-        }
-        
-        /* Header */
-        header {
-            background: white;
-            padding: 20px 30px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        
-        .user-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: var(--secondary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-        }
-        
-        /* Content */
-        .content {
-            padding: 30px;
-            flex: 1;
-        }
-        
-        .tab-content {
-            display: none;
-        }
-        
-        .tab-content.active {
-            display: block;
-            animation: fadeIn 0.5s;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        /* Stats Grid */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-        
-        .stat-card {
-            background: white;
-            padding: 25px;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            border-left: 4px solid var(--secondary);
-        }
-        
-        .stat-value {
-            font-size: 2rem;
-            font-weight: bold;
-            color: var(--primary);
-            margin: 10px 0;
-        }
-        
-        /* Tables */
-        .data-table {
-            background: white;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            margin-bottom: 30px;
-        }
-        
-        .table-header {
-            background: var(--primary);
-            color: white;
-            padding: 20px;
-            font-size: 1.2rem;
-        }
-        
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        
-        th, td {
-            padding: 15px;
-            text-align: left;
-            border-bottom: 1px solid #eee;
-        }
-        
-        th {
-            background: #f8f9fa;
-            font-weight: 600;
-            color: var(--primary);
-        }
-        
-        tr:hover {
-            background: #f8f9fa;
-        }
-        
-        /* Badges */
-        .badge {
-            padding: 5px 10px;
-            border-radius: 15px;
-            font-size: 0.8rem;
-            font-weight: 600;
-        }
-        
-        .badge-success { background: #d4edda; color: #155724; }
-        .badge-warning { background: #fff3cd; color: #856404; }
-        .badge-danger { background: #f8d7da; color: #721c24; }
-        
-        /* Buttons */
-        .btn {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .btn-primary {
-            background: var(--primary);
-            color: white;
-        }
-        
-        .btn-success {
-            background: var(--success);
-            color: white;
-        }
-        
-        .btn-danger {
-            background: var(--accent);
-            color: white;
-        }
-        
-        .btn-warning {
-            background: var(--warning);
-            color: white;
-        }
-        
-        .btn-sm {
-            padding: 6px 12px;
-            font-size: 0.85rem;
-        }
-        
-        .btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-        
-        /* Forms */
-        .form-container {
-            background: white;
-            padding: 25px;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            margin-bottom: 25px;
-        }
-        
-        .form-title {
-            font-size: 1.3rem;
-            margin-bottom: 20px;
-            color: var(--primary);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #333;
-        }
-        
-        .form-control {
-            width: 100%;
-            padding: 12px 15px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            font-size: 1rem;
-            transition: border-color 0.3s;
-        }
-        
-        .form-control:focus {
-            outline: none;
-            border-color: var(--primary);
-        }
-        
-        .form-row {
-            display: flex;
-            gap: 20px;
-        }
-        
-        .form-row .form-group {
-            flex: 1;
-        }
-        
-        /* Toast */
-        .toast {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 15px 25px;
-            border-radius: 6px;
-            color: white;
-            font-weight: 600;
-            z-index: 10000;
-            transform: translateX(400px);
-            transition: transform 0.3s ease;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        }
-        
-        .toast.show {
-            transform: translateX(0);
-        }
-        
-        .toast-success { background: var(--success); }
-        .toast-error { background: var(--accent); }
-        .toast-warning { background: var(--warning); }
-        
-        /* Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-            z-index: 2000;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .modal-content {
-            background: white;
-            border-radius: 10px;
-            width: 90%;
-            max-width: 500px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-            animation: modalSlideIn 0.3s ease;
-        }
-        
-        @keyframes modalSlideIn {
-            from { transform: translateY(-50px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-        
-        .modal-header {
-            padding: 20px;
-            border-bottom: 1px solid #eee;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .modal-body {
-            padding: 20px;
-        }
-        
-        .modal-footer {
-            padding: 20px;
-            border-top: 1px solid #eee;
-            display: flex;
-            justify-content: flex-end;
-            gap: 10px;
-        }
-
-        /* Loading states */
-        .loading {
-            opacity: 0.6;
-            pointer-events: none;
-        }
-
-        .spinner {
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        /* Action buttons container */
-        .action-buttons {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-
-        /* Status indicators */
-        .status-indicator {
-            display: inline-block;
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            margin-right: 8px;
-        }
-        
-        .status-active { background: var(--success); }
-        .status-pending { background: var(--warning); }
-        .status-inactive { background: var(--accent); }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .container {
-                flex-direction: column;
-            }
-            
-            .sidebar {
-                width: 100%;
-                height: auto;
-            }
-            
-            .form-row {
-                flex-direction: column;
-                gap: 0;
-            }
-            
-            .action-buttons {
-                flex-direction: column;
-            }
-            
-            .btn-sm {
-                width: 100%;
-                justify-content: center;
-            }
-        }
-    </style>
 </head>
 <body>
+    <!-- Login Screen -->
+    <div id="loginScreen" class="login-container">
+        <div class="login-box">
+            <div class="login-header">
+                <i class="fas fa-tint fa-2x" style="color: #3498db;"></i>
+                <h2>ONEP Commercial</h2>
+                <p>Système de Gestion Commerciale</p>
+            </div>
+            
+            <form id="loginForm">
+                <div class="form-group">
+                    <label>Nom d'utilisateur</label>
+                    <input type="text" id="username" class="form-control" required 
+                           placeholder="Entrez admin" value="admin">
+                </div>
+                
+                <div class="form-group">
+                    <label>Mot de passe</label>
+                    <input type="password" id="password" class="form-control" required 
+                           placeholder="Entrez admin123" value="admin123">
+                </div>
+                
+                <button type="submit" class="btn btn-primary btn-block">
+                    <i class="fas fa-sign-in-alt"></i> Se Connecter
+                </button>
+            </form>
+
+       <div class="demo-accounts">
+    <h4>Comptes de démonstration :</h4>
+    <p><strong>Utilisateur:</strong> admin</p>
+    <p><strong>Mot de passe:</strong> admin123</p>
+</div>
+            
+            <div class="login-footer">
+                <small>Système de démonstration ONEP</small>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Application -->
     <div class="container">
         <!-- Sidebar -->
         <div class="sidebar">
             <div class="logo">
-                <i class="fas fa-tint fa-2x" style="color: var(--secondary);"></i>
+                <i class="fas fa-tint fa-2x" style="color: #3498db;"></i>
                 <h2>ONEP Commercial</h2>
             </div>
             <ul class="nav-links">
@@ -455,6 +68,9 @@
                 <li data-tab="recouvrement">
                     <a href="#"><i class="fas fa-hand-holding-usd"></i> Recouvrement</a>
                 </li>
+                <li data-tab="database">
+                    <a href="#"><i class="fas fa-database"></i> Base de Données</a>
+                </li>
             </ul>
         </div>
 
@@ -464,11 +80,14 @@
             <header>
                 <h1 id="page-title">Tableau de Bord Commercial</h1>
                 <div class="user-info">
-                    <div>
-                        <div>Stagiaire ONEP</div>
-                        <div style="font-size: 0.9rem; color: #666;">Service Commercial</div>
+                    <div class="user-details">
+                        <div class="user-name">Non Connecté</div>
+                        <div class="user-role">Veuillez vous identifier</div>
                     </div>
                     <div class="user-avatar">ON</div>
+                    <button class="btn btn-sm btn-outline logout-btn" onclick="logout()" style="display: none;">
+                        <i class="fas fa-sign-out-alt"></i> Déconnexion
+                    </button>
                 </div>
             </header>
 
@@ -678,6 +297,110 @@
                         </table>
                     </div>
                 </div>
+
+                <!-- Base de Données -->
+                <div id="database" class="tab-content">
+                    <div class="database-viewer">
+                        <div class="database-header">
+                            <h2><i class="fas fa-database"></i> Base de Données - Visualisation</h2>
+                            <p>Voir toutes les données en temps réel</p>
+                        </div>
+
+                        <div class="database-stats">
+                            <div class="db-stat-card">
+                                <div class="db-stat-value" id="db-clients-count">0</div>
+                                <div class="db-stat-label">Clients</div>
+                            </div>
+                            <div class="db-stat-card">
+                                <div class="db-stat-value" id="db-orders-count">0</div>
+                                <div class="db-stat-label">Commandes</div>
+                            </div>
+                            <div class="db-stat-card">
+                                <div class="db-stat-value" id="db-invoices-count">0</div>
+                                <div class="db-stat-label">Factures</div>
+                            </div>
+                        </div>
+
+                        <div class="database-tables">
+                            <!-- Clients Table -->
+                            <div class="db-table-section">
+                                <h3><i class="fas fa-users"></i> Table: Clients</h3>
+                                <div class="db-table-container">
+                                    <table class="db-table">
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Nom</th>
+                                                <th>Email</th>
+                                                <th>Téléphone</th>
+                                                <th>Adresse</th>
+                                                <th>Date Création</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="db-clients-table">
+                                            <tr><td colspan="6" style="text-align: center; padding: 20px;">Aucun client</td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <!-- Commandes Table -->
+                            <div class="db-table-section">
+                                <h3><i class="fas fa-shopping-cart"></i> Table: Commandes</h3>
+                                <div class="db-table-container">
+                                    <table class="db-table">
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>N° Commande</th>
+                                                <th>Client</th>
+                                                <th>Service</th>
+                                                <th>Montant</th>
+                                                <th>Statut</th>
+                                                <th>Date Commande</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="db-orders-table">
+                                            <tr><td colspan="7" style="text-align: center; padding: 20px;">Aucune commande</td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <!-- Factures Table -->
+                            <div class="db-table-section">
+                                <h3><i class="fas fa-file-invoice"></i> Table: Factures</h3>
+                                <div class="db-table-container">
+                                    <table class="db-table">
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>N° Facture</th>
+                                                <th>Client</th>
+                                                <th>Montant</th>
+                                                <th>Échéance</th>
+                                                <th>Statut Paiement</th>
+                                                <th>Jours Retard</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="db-invoices-table">
+                                            <tr><td colspan="7" style="text-align: center; padding: 20px;">Aucune facture</td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="database-actions">
+                            <button class="btn btn-primary" onclick="refreshDatabaseView()">
+                                <i class="fas fa-sync-alt"></i> Actualiser les données
+                            </button>
+                            <button class="btn btn-success" onclick="exportDatabase()">
+                                <i class="fas fa-download"></i> Exporter la base
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -722,1144 +445,6 @@
     <!-- Toast -->
     <div id="toast" class="toast"></div>
 
-    <script>
-        // =============================================
-        // FONCTIONS UTILITAIRES
-        // =============================================
-
-        // Échappement HTML pour la sécurité
-        function escapeHtml(text) {
-            if (!text) return '';
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
-        }
-
-        // Échappement des guillemets simples pour les événements onclick
-        function escapeSingleQuotes(text) {
-            if (!text) return '';
-            return text.replace(/'/g, "\\'");
-        }
-
-        // Décodage des guillemets simples
-        function unescapeSingleQuotes(text) {
-            if (!text) return '';
-            return text.replace(/\\'/g, "'");
-        }
-
-        // Formatage des nombres
-        function formatNumber(number) {
-            return new Intl.NumberFormat('fr-FR').format(number);
-        }
-
-        // =============================================
-        // GESTION DE LA NAVIGATION
-        // =============================================
-
-        function setupNavigation() {
-            const navItems = document.querySelectorAll('.nav-links li');
-            const tabContents = document.querySelectorAll('.tab-content');
-            const pageTitle = document.getElementById('page-title');
-            
-            const titles = {
-                'dashboard': 'Tableau de Bord Commercial',
-                'clients': 'Gestion des Clients',
-                'commandes': 'Gestion des Commandes',
-                'recouvrement': 'Module de Recouvrement'
-            };
-            
-            navItems.forEach(item => {
-                item.addEventListener('click', function() {
-                    const tabId = this.getAttribute('data-tab');
-                    
-                    // Mettre à jour la navigation
-                    navItems.forEach(i => i.classList.remove('active'));
-                    this.classList.add('active');
-                    
-                    // Afficher l'onglet
-                    tabContents.forEach(content => content.classList.remove('active'));
-                    document.getElementById(tabId).classList.add('active');
-                    
-                    // Mettre à jour le titre
-                    pageTitle.textContent = titles[tabId];
-                    
-                    // Charger les données
-                    loadTabData(tabId);
-                });
-            });
-        }
-
-        // =============================================
-        // NOTIFICATIONS TOAST
-        // =============================================
-
-        function showToast(message, type = 'success') {
-            const toast = document.getElementById('toast');
-            toast.textContent = message;
-            toast.className = `toast toast-${type} show`;
-            
-            setTimeout(() => {
-                toast.classList.remove('show');
-            }, 4000);
-        }
-
-        // =============================================
-        // GESTION DU MODAL
-        // =============================================
-
-        function openModal() {
-            document.getElementById('editModal').style.display = 'flex';
-        }
-
-        function closeModal() {
-            document.getElementById('editModal').style.display = 'none';
-        }
-
-        // Fermer le modal en cliquant à l'extérieur
-        document.getElementById('editModal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeModal();
-            }
-        });
-
-        // =============================================
-        // CHARGEMENT DES DONNÉES PAR ONGLET
-        // =============================================
-
-        function loadTabData(tabId) {
-            switch(tabId) {
-                case 'dashboard':
-                    loadDashboard();
-                    break;
-                case 'clients':
-                    loadClients();
-                    break;
-                case 'commandes':
-                    loadOrders();
-                    break;
-                case 'recouvrement':
-                    loadRecouvrement();
-                    break;
-            }
-        }
-
-        // =============================================
-        // TABLEAU DE BORD
-        // =============================================
-
-        async function loadDashboard() {
-            try {
-                showLoading('recent-orders', 5);
-                
-                const [clientsResponse, ordersResponse] = await Promise.all([
-                    fetch('api-clients.php'),
-                    fetch('api-commandes.php')
-                ]);
-                
-                if (!clientsResponse.ok) throw new Error('Erreur chargement clients');
-                if (!ordersResponse.ok) throw new Error('Erreur chargement commandes');
-                
-                const clients = await clientsResponse.json();
-                const orders = await ordersResponse.json();
-                
-                // Mettre à jour les statistiques
-                document.getElementById('total-clients').textContent = clients.length;
-                
-                const totalRevenue = orders.reduce((sum, order) => sum + parseFloat(order.Montant || 0), 0);
-                document.getElementById('total-revenue').textContent = formatNumber(totalRevenue) + ' DH';
-                
-                const activeOrders = orders.filter(o => o.Statut === 'En cours').length;
-                document.getElementById('active-orders').textContent = activeOrders;
-                
-                const overdueAmount = orders
-                    .filter(o => o.Statut === 'En cours')
-                    .reduce((sum, order) => sum + parseFloat(order.Montant || 0), 0);
-                document.getElementById('overdue-amount').textContent = formatNumber(overdueAmount) + ' DH';
-                
-                // Afficher les commandes récentes
-                const tbody = document.getElementById('recent-orders');
-                if (orders.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 40px; color: #666;">Aucune commande récente</td></tr>';
-                } else {
-                    const recentOrders = orders.slice(0, 5);
-                    tbody.innerHTML = recentOrders.map(order => `
-                        <tr>
-                            <td><strong>${escapeHtml(order.NumeroCommande)}</strong></td>
-                            <td>${escapeHtml(order.NomClient)}</td>
-                            <td>${escapeHtml(order.Service)}</td>
-                            <td><strong>${formatNumber(parseFloat(order.Montant))} DH</strong></td>
-                            <td>
-                                <span class="badge ${order.Statut === 'Livree' ? 'badge-success' : order.Statut === 'En cours' ? 'badge-warning' : 'badge-danger'}">
-                                    <span class="status-indicator ${order.Statut === 'Livree' ? 'status-active' : order.Statut === 'En cours' ? 'status-pending' : 'status-inactive'}"></span>
-                                    ${order.Statut}
-                                </span>
-                            </td>
-                        </tr>
-                    `).join('');
-                }
-            } catch (error) {
-                console.error('Erreur dashboard:', error);
-                showToast('Erreur lors du chargement du tableau de bord', 'error');
-                document.getElementById('recent-orders').innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 40px; color: #e74c3c;">Erreur de chargement</td></tr>';
-            }
-        }
-
-        // =============================================
-        // GESTION DES CLIENTS
-        // =============================================
-
-        async function loadClients() {
-            try {
-                showLoading('clients-list', 5);
-                
-                const response = await fetch('api-clients.php');
-                if (!response.ok) throw new Error('Erreur de chargement des clients');
-                
-                const clients = await response.json();
-                const tbody = document.getElementById('clients-list');
-                
-                if (clients.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 40px; color: #666;">Aucun client enregistré</td></tr>';
-                } else {
-                    tbody.innerHTML = clients.map(client => `
-                        <tr>
-                            <td><strong>${escapeHtml(client.Nom)}</strong></td>
-                            <td>${escapeHtml(client.Email)}</td>
-                            <td>${escapeHtml(client.Telephone || '-')}</td>
-                            <td>${escapeHtml(client.Adresse || '-')}</td>
-                            <td>
-                                <div class="action-buttons">
-                                    <button class="btn btn-primary btn-sm" onclick="editClient(${client.ClientID}, '${escapeSingleQuotes(client.Nom)}', '${escapeSingleQuotes(client.Email)}', '${escapeSingleQuotes(client.Telephone || '')}', '${escapeSingleQuotes(client.Adresse || '')}')">
-                                        <i class="fas fa-edit"></i> Modifier
-                                    </button>
-                                    <button class="btn btn-danger btn-sm" onclick="deleteClient(${client.ClientID})">
-                                        <i class="fas fa-trash"></i> Supprimer
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                    `).join('');
-                }
-            } catch (error) {
-                console.error('Erreur clients:', error);
-                showToast('Erreur lors du chargement des clients', 'error');
-                document.getElementById('clients-list').innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 40px; color: #e74c3c;">Erreur de chargement</td></tr>';
-            }
-        }
-
-        // Ajouter un client
-        document.getElementById('client-form').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const submitBtn = document.getElementById('submit-client');
-            const originalText = submitBtn.innerHTML;
-            
-            try {
-                // Désactiver le bouton et afficher le spinner
-                submitBtn.innerHTML = '<i class="fas fa-spinner spinner"></i> Enregistrement...';
-                submitBtn.disabled = true;
-                
-                const clientData = {
-                    nom: document.getElementById('client-name').value.trim(),
-                    email: document.getElementById('client-email').value.trim(),
-                    telephone: document.getElementById('client-phone').value.trim(),
-                    adresse: document.getElementById('client-address').value.trim(),
-                    ville: 'Casablanca'
-                };
-                
-                // Validation côté client
-                if (!clientData.nom) {
-                    throw new Error('Le nom est obligatoire');
-                }
-                if (!clientData.email) {
-                    throw new Error('L\'email est obligatoire');
-                }
-                
-                const response = await fetch('api-clients.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(clientData)
-                });
-                
-                const result = await response.json();
-                
-                if (result.success) {
-                    showToast('Client ajouté avec succès!');
-                    document.getElementById('client-form').reset();
-                    await loadClients();
-                    await loadClientsForOrders();
-                    await loadDashboard(); // Mettre à jour les stats
-                } else {
-                    throw new Error(result.message || 'Erreur lors de l\'ajout');
-                }
-            } catch (error) {
-                console.error('Erreur ajout client:', error);
-                showToast('Erreur: ' + error.message, 'error');
-            } finally {
-                // Réactiver le bouton
-                submitBtn.innerHTML = originalText;
-                submitBtn.disabled = false;
-            }
-        });
-
-        // Modifier un client
-        function editClient(id, nom, email, telephone, adresse) {
-            // Décoder les valeurs échappées
-            const decodedNom = unescapeSingleQuotes(nom);
-            const decodedEmail = unescapeSingleQuotes(email);
-            const decodedTelephone = unescapeSingleQuotes(telephone);
-            const decodedAdresse = unescapeSingleQuotes(adresse);
-            
-            document.getElementById('edit-client-id').value = id;
-            document.getElementById('edit-client-name').value = decodedNom;
-            document.getElementById('edit-client-email').value = decodedEmail;
-            document.getElementById('edit-client-phone').value = decodedTelephone;
-            document.getElementById('edit-client-address').value = decodedAdresse;
-            
-            openModal();
-        }
-
-        async function updateClient() {
-            const updateBtn = document.getElementById('update-client-btn');
-            const originalText = updateBtn.innerHTML;
-            
-            try {
-                updateBtn.innerHTML = '<i class="fas fa-spinner spinner"></i> Enregistrement...';
-                updateBtn.disabled = true;
-                
-                const clientData = {
-                    id: document.getElementById('edit-client-id').value,
-                    nom: document.getElementById('edit-client-name').value.trim(),
-                    email: document.getElementById('edit-client-email').value.trim(),
-                    telephone: document.getElementById('edit-client-phone').value.trim(),
-                    adresse: document.getElementById('edit-client-address').value.trim(),
-                    ville: 'Casablanca'
-                };
-                
-                // Validation
-                if (!clientData.nom) throw new Error('Le nom est obligatoire');
-                if (!clientData.email) throw new Error('L\'email est obligatoire');
-                
-                const response = await fetch('api-clients.php', {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(clientData)
-                });
-                
-                const result = await response.json();
-                
-                if (result.success) {
-                    showToast('Client modifié avec succès!');
-                    closeModal();
-                    await loadClients();
-                    await loadClientsForOrders();
-                } else {
-                    throw new Error(result.message || 'Erreur lors de la modification');
-                }
-            } catch (error) {
-                console.error('Erreur modification client:', error);
-                showToast('Erreur: ' + error.message, 'error');
-            } finally {
-                updateBtn.innerHTML = originalText;
-                updateBtn.disabled = false;
-            }
-        }
-
-        // Supprimer un client
-        async function deleteClient(clientID) {
-            if (!confirm('Êtes-vous sûr de vouloir supprimer ce client ? Cette action est irréversible.')) {
-                return;
-            }
-            
-            try {
-                const response = await fetch(`api-clients.php?id=${clientID}`, {
-                    method: 'DELETE'
-                });
-                
-                const result = await response.json();
-                
-                if (result.success) {
-                    showToast('Client supprimé avec succès!');
-                    await loadClients();
-                    await loadClientsForOrders();
-                    await loadDashboard();
-                } else {
-                    throw new Error(result.message || 'Erreur lors de la suppression');
-                }
-            } catch (error) {
-                console.error('Erreur suppression client:', error);
-                showToast('Erreur: ' + error.message, 'error');
-            }
-        }
-
-        // =============================================
-        // GESTION DES COMMANDES
-        // =============================================
-
-        async function loadClientsForOrders() {
-            try {
-                const response = await fetch('api-clients.php');
-                if (!response.ok) throw new Error('Erreur de chargement des clients');
-                
-                const clients = await response.json();
-                const select = document.getElementById('order-client');
-                
-                select.innerHTML = '<option value="">Sélectionner un client</option>' +
-                    clients.map(client => 
-                        `<option value="${client.ClientID}">${escapeHtml(client.Nom)}</option>`
-                    ).join('');
-            } catch (error) {
-                console.error('Erreur chargement clients:', error);
-                showToast('Erreur lors du chargement de la liste des clients', 'error');
-            }
-        }
-
-        async function loadOrders() {
-            try {
-                showLoading('orders-list', 6);
-                
-                const response = await fetch('api-commandes.php');
-                if (!response.ok) throw new Error('Erreur de chargement des commandes');
-                
-                const orders = await response.json();
-                const tbody = document.getElementById('orders-list');
-                
-                if (orders.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 40px; color: #666;">Aucune commande</td></tr>';
-                } else {
-                    tbody.innerHTML = orders.map(order => `
-                        <tr>
-                            <td><strong>${escapeHtml(order.NumeroCommande)}</strong></td>
-                            <td>${escapeHtml(order.NomClient)}</td>
-                            <td>${escapeHtml(order.Service)}</td>
-                            <td><strong>${formatNumber(parseFloat(order.Montant))} DH</strong></td>
-                            <td>${new Date(order.DateCommande).toLocaleDateString('fr-FR')}</td>
-                            <td>
-                                <span class="badge ${order.Statut === 'Livree' ? 'badge-success' : order.Statut === 'En cours' ? 'badge-warning' : 'badge-danger'}">
-                                    <span class="status-indicator ${order.Statut === 'Livree' ? 'status-active' : order.Statut === 'En cours' ? 'status-pending' : 'status-inactive'}"></span>
-                                    ${order.Statut}
-                                </span>
-                            </td>
-                        </tr>
-                    `).join('');
-                }
-            } catch (error) {
-                console.error('Erreur commandes:', error);
-                showToast('Erreur lors du chargement des commandes', 'error');
-                document.getElementById('orders-list').innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 40px; color: #e74c3c;">Erreur de chargement</td></tr>';
-            }
-        }
-
-        // Créer une commande
-        document.getElementById('order-form').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const submitBtn = document.getElementById('submit-order');
-            const originalText = submitBtn.innerHTML;
-            
-            try {
-                submitBtn.innerHTML = '<i class="fas fa-spinner spinner"></i> Création...';
-                submitBtn.disabled = true;
-                
-                const servicePrices = {
-                    'Eau Résidentielle': 250,
-                    'Eau Professionnelle': 800,
-                    'Electricité Résidentielle': 350,
-                    'Electricité Professionnelle': 1200
-                };
-                
-                const selectedService = document.getElementById('order-service').value;
-                const quantity = parseInt(document.getElementById('order-quantity').value) || 1;
-                const montant = servicePrices[selectedService] * quantity;
-                
-                const orderData = {
-                    clientID: document.getElementById('order-client').value,
-                    service: selectedService,
-                    quantite: quantity,
-                    montant: montant,
-                    notes: document.getElementById('order-notes').value
-                };
-                
-                // Validation
-                if (!orderData.clientID) throw new Error('Veuillez sélectionner un client');
-                if (!orderData.service) throw new Error('Veuillez sélectionner un service');
-                
-                const response = await fetch('api-commandes.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(orderData)
-                });
-                
-                const result = await response.json();
-                
-                if (result.success) {
-                    showToast(`Commande créée: ${result.numeroCommande}`);
-                    document.getElementById('order-form').reset();
-                    await loadOrders();
-                    await loadDashboard();
-                } else {
-                    throw new Error(result.message || 'Erreur lors de la création');
-                }
-            } catch (error) {
-                console.error('Erreur création commande:', error);
-                showToast('Erreur: ' + error.message, 'error');
-            } finally {
-                submitBtn.innerHTML = originalText;
-                submitBtn.disabled = false;
-            }
-        });
-
-        // =============================================
-        // RECOUVREMENT
-        // =============================================
-
-        async function loadRecouvrement() {
-            try {
-                showLoading('overdue-invoices', 6);
-                
-                const response = await fetch('api-recouvrement.php');
-                if (!response.ok) throw new Error('Erreur de chargement du recouvrement');
-                
-                const factures = await response.json();
-                
-                // Mettre à jour les statistiques
-                document.getElementById('overdue-count').textContent = factures.length;
-                
-                const totalAmount = factures.reduce((sum, facture) => sum + parseFloat(facture.Montant || 0), 0);
-                document.getElementById('overdue-total').textContent = formatNumber(totalAmount) + ' DH';
-                
-                const uniqueClients = [...new Set(factures.map(f => f.NomClient))];
-                document.getElementById('overdue-clients').textContent = uniqueClients.length;
-                
-                const tbody = document.getElementById('overdue-invoices');
-                if (factures.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 40px; color: #666;">Aucune facture en retard</td></tr>';
-                } else {
-                    tbody.innerHTML = factures.map(facture => `
-                        <tr>
-                            <td><strong>${escapeHtml(facture.NumeroFacture)}</strong></td>
-                            <td>${escapeHtml(facture.NomClient)}</td>
-                            <td>${new Date(facture.DateEcheance).toLocaleDateString('fr-FR')}</td>
-                            <td>
-                                <span class="badge badge-danger">
-                                    ${facture.JoursRetard} jour${facture.JoursRetard > 1 ? 's' : ''}
-                                </span>
-                            </td>
-                            <td><strong>${formatNumber(parseFloat(facture.Montant))} DH</strong></td>
-                            <td>
-                                <button class="btn btn-success btn-sm" onclick="markAsPaid(${facture.FactureID})">
-                                    <i class="fas fa-check"></i> Marquer Payée
-                                </button>
-                            </td>
-                        </tr>
-                    `).join('');
-                }
-            } catch (error) {
-                console.error('Erreur recouvrement:', error);
-                showToast('Erreur lors du chargement du recouvrement', 'error');
-                document.getElementById('overdue-invoices').innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 40px; color: #e74c3c;">Erreur de chargement</td></tr>';
-            }
-        }
-
-        // Marquer comme payée
-        async function markAsPaid(factureID) {
-            if (!confirm('Marquer cette facture comme payée ? Cette action mettra à jour son statut.')) {
-                return;
-            }
-            
-            try {
-                const response = await fetch('api-recouvrement.php', {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ id: factureID })
-                });
-                
-                const result = await response.json();
-                
-                if (result.success) {
-                    showToast('Facture marquée comme payée!');
-                    await loadRecouvrement();
-                } else {
-                    throw new Error(result.message || 'Erreur lors du traitement');
-                }
-            } catch (error) {
-                console.error('Erreur paiement facture:', error);
-                showToast('Erreur: ' + error.message, 'error');
-            }
-        }
-
-        // =============================================
-        // FONCTIONS UTILITAIRES
-        // =============================================
-
-        function showLoading(elementId, columns) {
-            const element = document.getElementById(elementId);
-            element.innerHTML = `
-                <tr>
-                    <td colspan="${columns}" style="text-align: center; padding: 40px;">
-                        <div style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
-                            <i class="fas fa-spinner spinner" style="font-size: 24px; color: var(--primary);"></i>
-                            <div style="color: #666;">Chargement en cours...</div>
-                        </div>
-                    </td>
-                </tr>
-            `;
-        }
-
-        // =============================================
-        // INITIALISATION
-        // =============================================
-
-        document.addEventListener('DOMContentLoaded', function() {
-            setupNavigation();
-            loadClientsForOrders();
-            loadDashboard();
-            
-            // Charger les données initiales
-            loadClients();
-            loadOrders();
-            loadRecouvrement();
-            
-            console.log('Application ONEP Commercial initialisée avec succès');
-        });
-
-        // Gestion des erreurs globales
-        window.addEventListener('error', function(e) {
-            console.error('Erreur globale:', e.error);
-            showToast('Une erreur inattendue est survenue', 'error');
-        });
-    </script>
-</body>
-</html>-- Modal pour modifier client -->
-    <div class="modal" id="editModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3><i class="fas fa-edit"></i> Modifier le Client</h3>
-                <button type="button" class="btn btn-sm" onclick="closeModal()" style="background: none; border: none; font-size: 1.5rem;">&times;</button>
-            </div>
-            <div class="modal-body">
-                <form id="edit-client-form">
-                    <input type="hidden" id="edit-client-id">
-                    <div class="form-group">
-                        <label>Nom du Client</label>
-                        <input type="text" class="form-control" id="edit-client-name" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Email</label>
-                        <input type="email" class="form-control" id="edit-client-email" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Téléphone</label>
-                        <input type="tel" class="form-control" id="edit-client-phone">
-                    </div>
-                    <div class="form-group">
-                        <label>Adresse</label>
-                        <input type="text" class="form-control" id="edit-client-address">
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button class="btn" onclick="closeModal()">Annuler</button>
-                <button class="btn btn-success" onclick="updateClient()" id="update-client-btn">Enregistrer</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Toast -->
-    <div id="toast" class="toast"></div>
-
-    <script>
-        // Navigation
-        function setupNavigation() {
-            const navItems = document.querySelectorAll('.nav-links li');
-            const tabContents = document.querySelectorAll('.tab-content');
-            const pageTitle = document.getElementById('page-title');
-            
-            const titles = {
-                'dashboard': 'Tableau de Bord Commercial',
-                'clients': 'Gestion des Clients',
-                'commandes': 'Gestion des Commandes',
-                'recouvrement': 'Module de Recouvrement'
-            };
-            
-            navItems.forEach(item => {
-                item.addEventListener('click', function() {
-                    const tabId = this.getAttribute('data-tab');
-                    
-                    // Mettre à jour la navigation
-                    navItems.forEach(i => i.classList.remove('active'));
-                    this.classList.add('active');
-                    
-                    // Afficher l'onglet
-                    tabContents.forEach(content => content.classList.remove('active'));
-                    document.getElementById(tabId).classList.add('active');
-                    
-                    // Mettre à jour le titre
-                    pageTitle.textContent = titles[tabId];
-                    
-                    // Charger les données
-                    loadTabData(tabId);
-                });
-            });
-        }
-
-        // Toast
-        function showToast(message, type = 'success') {
-            const toast = document.getElementById('toast');
-            toast.textContent = message;
-            toast.className = `toast toast-${type} show`;
-            setTimeout(() => toast.classList.remove('show'), 3000);
-        }
-
-        // Modal
-        function openModal() {
-            document.getElementById('editModal').style.display = 'flex';
-        }
-
-        function closeModal() {
-            document.getElementById('editModal').style.display = 'none';
-        }
-
-        // Charger les données d'un onglet
-        function loadTabData(tabId) {
-            switch(tabId) {
-                case 'dashboard':
-                    loadDashboard();
-                    break;
-                case 'clients':
-                    loadClients();
-                    break;
-                case 'commandes':
-                    loadOrders();
-                    break;
-                case 'recouvrement':
-                    loadRecouvrement();
-                    break;
-            }
-        }
-
-        // Dashboard
-        async function loadDashboard() {
-            try {
-                const [clientsResponse, ordersResponse] = await Promise.all([
-                    fetch('api-clients.php'),
-                    fetch('api-commandes.php')
-                ]);
-                
-                if (!clientsResponse.ok || !ordersResponse.ok) {
-                    throw new Error('Erreur de chargement des données');
-                }
-                
-                const clients = await clientsResponse.json();
-                const orders = await ordersResponse.json();
-                
-                document.getElementById('total-clients').textContent = clients.length;
-                
-                // Calculer le chiffre d'affaires
-                const totalRevenue = orders.reduce((sum, order) => sum + parseFloat(order.Montant || 0), 0);
-                document.getElementById('total-revenue').textContent = totalRevenue.toLocaleString('fr-FR') + ' DH';
-                
-                document.getElementById('active-orders').textContent = orders.filter(o => o.Statut === 'En cours').length;
-                
-                // Calculer le montant en souffrance
-                const overdueAmount = orders
-                    .filter(o => o.Statut === 'En cours')
-                    .reduce((sum, order) => sum + parseFloat(order.Montant || 0), 0);
-                document.getElementById('overdue-amount').textContent = overdueAmount.toLocaleString('fr-FR') + ' DH';
-                
-                const tbody = document.getElementById('recent-orders');
-                if (orders.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 40px;">Aucune commande récente</td></tr>';
-                } else {
-                    const recentOrders = orders.slice(0, 5);
-                    tbody.innerHTML = recentOrders.map(order => `
-                        <tr>
-                            <td>${order.NumeroCommande}</td>
-                            <td>${order.NomClient}</td>
-                            <td>${order.Service}</td>
-                            <td>${parseFloat(order.Montant).toLocaleString('fr-FR')} DH</td>
-                            <td><span class="badge ${order.Statut === 'Livree' ? 'badge-success' : 'badge-warning'}">${order.Statut}</span></td>
-                        </tr>
-                    `).join('');
-                }
-            } catch (error) {
-                console.error('Erreur dashboard:', error);
-                showToast('Erreur chargement dashboard', 'error');
-            }
-        }
-
-        // Gestion des Clients
-        async function loadClients() {
-            try {
-                const response = await fetch('api-clients.php');
-                if (!response.ok) {
-                    throw new Error('Erreur de chargement des clients');
-                }
-                
-                const clients = await response.json();
-                
-                const tbody = document.getElementById('clients-list');
-                if (clients.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 40px;">Aucun client enregistré</td></tr>';
-                } else {
-                    tbody.innerHTML = clients.map(client => `
-                        <tr>
-                            <td>${escapeHtml(client.Nom)}</td>
-                            <td>${escapeHtml(client.Email)}</td>
-                            <td>${escapeHtml(client.Telephone || '-')}</td>
-                            <td>${escapeHtml(client.Adresse || '-')}</td>
-                            <td>
-                                <button class="btn btn-primary btn-sm" onclick="editClient(${client.ClientID}, '${escapeSingleQuotes(client.Nom)}', '${escapeSingleQuotes(client.Email)}', '${escapeSingleQuotes(client.Telephone || '')}', '${escapeSingleQuotes(client.Adresse || '')}')">
-                                    <i class="fas fa-edit"></i> Modifier
-                                </button>
-                                <button class="btn btn-danger btn-sm" onclick="deleteClient(${client.ClientID})">
-                                    <i class="fas fa-trash"></i> Supprimer
-                                </button>
-                            </td>
-                        </tr>
-                    `).join('');
-                }
-            } catch (error) {
-                console.error('Erreur clients:', error);
-                showToast('Erreur chargement clients', 'error');
-            }
-        }
-
-        // Fonctions d'échappement
-        function escapeHtml(text) {
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
-        }
-
-        function escapeSingleQuotes(text) {
-            return text.replace(/'/g, "\\'");
-        }
-
-        // Ajouter un client
-        document.getElementById('client-form').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const submitBtn = document.getElementById('submit-client');
-            const originalText = submitBtn.innerHTML;
-            
-            try {
-                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enregistrement...';
-                submitBtn.disabled = true;
-                
-                const clientData = {
-                    nom: document.getElementById('client-name').value,
-                    email: document.getElementById('client-email').value,
-                    telephone: document.getElementById('client-phone').value,
-                    adresse: document.getElementById('client-address').value,
-                    ville: 'Casablanca'
-                };
-                
-                const response = await fetch('api-clients.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(clientData)
-                });
-                
-                const result = await response.json();
-                
-                if (result.success) {
-                    showToast('Client ajouté avec succès!');
-                    document.getElementById('client-form').reset();
-                    await loadClients();
-                    await loadClientsForOrders();
-                } else {
-                    showToast('Erreur: ' + result.message, 'error');
-                }
-            } catch (error) {
-                console.error('Erreur ajout client:', error);
-                showToast('Erreur lors de l\'ajout', 'error');
-            } finally {
-                submitBtn.innerHTML = originalText;
-                submitBtn.disabled = false;
-            }
-        });
-
-        // Modifier un client
-        function editClient(id, nom, email, telephone, adresse) {
-            document.getElementById('edit-client-id').value = id;
-            document.getElementById('edit-client-name').value = nom;
-            document.getElementById('edit-client-email').value = email;
-            document.getElementById('edit-client-phone').value = telephone;
-            document.getElementById('edit-client-address').value = adresse;
-            openModal();
-        }
-
-        async function updateClient() {
-            const updateBtn = document.getElementById('update-client-btn');
-            const originalText = updateBtn.innerHTML;
-            
-            try {
-                updateBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enregistrement...';
-                updateBtn.disabled = true;
-                
-                const clientData = {
-                    id: document.getElementById('edit-client-id').value,
-                    nom: document.getElementById('edit-client-name').value,
-                    email: document.getElementById('edit-client-email').value,
-                    telephone: document.getElementById('edit-client-phone').value,
-                    adresse: document.getElementById('edit-client-address').value,
-                    ville: 'Casablanca'
-                };
-                
-                const response = await fetch('api-clients.php', {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(clientData)
-                });
-                
-                const result = await response.json();
-                
-                if (result.success) {
-                    showToast('Client modifié avec succès!');
-                    closeModal();
-                    await loadClients();
-                    await loadClientsForOrders();
-                } else {
-                    showToast('Erreur: ' + result.message, 'error');
-                }
-            } catch (error) {
-                console.error('Erreur modification client:', error);
-                showToast('Erreur lors de la modification', 'error');
-            } finally {
-                updateBtn.innerHTML = originalText;
-                updateBtn.disabled = false;
-            }
-        }
-
-        // Supprimer un client
-        async function deleteClient(clientID) {
-            if (!confirm('Êtes-vous sûr de vouloir supprimer ce client ?')) {
-                return;
-            }
-            
-            try {
-                const response = await fetch(`api-clients.php?id=${clientID}`, {
-                    method: 'DELETE'
-                });
-                
-                const result = await response.json();
-                
-                if (result.success) {
-                    showToast('Client supprimé avec succès!');
-                    await loadClients();
-                    await loadClientsForOrders();
-                } else {
-                    showToast('Erreur: ' + result.message, 'error');
-                }
-            } catch (error) {
-                console.error('Erreur suppression client:', error);
-                showToast('Erreur lors de la suppression', 'error');
-            }
-        }
-
-        // Gestion des Commandes
-        async function loadClientsForOrders() {
-            try {
-                const response = await fetch('api-clients.php');
-                if (!response.ok) {
-                    throw new Error('Erreur de chargement des clients');
-                }
-                
-                const clients = await response.json();
-                
-                const select = document.getElementById('order-client');
-                select.innerHTML = '<option value="">Sélectionner un client</option>' +
-                    clients.map(client => 
-                        `<option value="${client.ClientID}">${escapeHtml(client.Nom)}</option>`
-                    ).join('');
-            } catch (error) {
-                console.error('Erreur chargement clients:', error);
-            }
-        }
-
-        async function loadOrders() {
-            try {
-                const response = await fetch('api-commandes.php');
-                if (!response.ok) {
-                    throw new Error('Erreur de chargement des commandes');
-                }
-                
-                const orders = await response.json();
-                
-                const tbody = document.getElementById('orders-list');
-                if (orders.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 40px;">Aucune commande</td></tr>';
-                } else {
-                    tbody.innerHTML = orders.map(order => `
-                        <tr>
-                            <td>${escapeHtml(order.NumeroCommande)}</td>
-                            <td>${escapeHtml(order.NomClient)}</td>
-                            <td>${escapeHtml(order.Service)}</td>
-                            <td>${parseFloat(order.Montant).toLocaleString('fr-FR')} DH</td>
-                            <td>${new Date(order.DateCommande).toLocaleDateString('fr-FR')}</td>
-                            <td><span class="badge ${order.Statut === 'Livree' ? 'badge-success' : 'badge-warning'}">${order.Statut}</span></td>
-                        </tr>
-                    `).join('');
-                }
-            } catch (error) {
-                console.error('Erreur commandes:', error);
-                showToast('Erreur chargement commandes', 'error');
-            }
-        }
-
-        // Créer une commande
-        document.getElementById('order-form').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const submitBtn = document.getElementById('submit-order');
-            const originalText = submitBtn.innerHTML;
-            
-            try {
-                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Création...';
-                submitBtn.disabled = true;
-                
-                const servicePrices = {
-                    'Eau Résidentielle': 250,
-                    'Eau Professionnelle': 800,
-                    'Electricité Résidentielle': 350,
-                    'Electricité Professionnelle': 1200
-                };
-                
-                const selectedService = document.getElementById('order-service').value;
-                const quantity = parseInt(document.getElementById('order-quantity').value) || 1;
-                const montant = servicePrices[selectedService] * quantity;
-                
-                const orderData = {
-                    clientID: document.getElementById('order-client').value,
-                    service: selectedService,
-                    quantite: quantity,
-                    montant: montant,
-                    notes: document.getElementById('order-notes').value
-                };
-                
-                const response = await fetch('api-commandes.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(orderData)
-                });
-                
-                const result = await response.json();
-                
-                if (result.success) {
-                    showToast(`Commande créée: ${result.numeroCommande}`);
-                    document.getElementById('order-form').reset();
-                    await loadOrders();
-                    await loadDashboard();
-                } else {
-                    showToast('Erreur: ' + result.message, 'error');
-                }
-            } catch (error) {
-                console.error('Erreur création commande:', error);
-                showToast('Erreur lors de la création', 'error');
-            } finally {
-                submitBtn.innerHTML = originalText;
-                submitBtn.disabled = false;
-            }
-        });
-
-        // Recouvrement
-        async function loadRecouvrement() {
-            try {
-                const response = await fetch('api-recouvrement.php');
-                if (!response.ok) {
-                    throw new Error('Erreur de chargement du recouvrement');
-                }
-                
-                const factures = await response.json();
-                
-                document.getElementById('overdue-count').textContent = factures.length;
-                
-                const totalAmount = factures.reduce((sum, facture) => sum + parseFloat(facture.Montant || 0), 0);
-                document.getElementById('overdue-total').textContent = totalAmount.toLocaleString('fr-FR') + ' DH';
-                
-                const uniqueClients = [...new Set(factures.map(f => f.NomClient))];
-                document.getElementById('overdue-clients').textContent = uniqueClients.length;
-                
-                const tbody = document.getElementById('overdue-invoices');
-                if (factures.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 40px;">Aucune facture en retard</td></tr>';
-                } else {
-                    tbody.innerHTML = factures.map(facture => `
-                        <tr>
-                            <td>${escapeHtml(facture.NumeroFacture)}</td>
-                            <td>${escapeHtml(facture.NomClient)}</td>
-                            <td>${new Date(facture.DateEcheance).toLocaleDateString('fr-FR')}</td>
-                            <td><span class="badge badge-danger">${facture.JoursRetard} jours</span></td>
-                            <td>${parseFloat(facture.Montant).toLocaleString('fr-FR')} DH</td>
-                            <td>
-                                <button class="btn btn-success btn-sm" onclick="markAsPaid(${facture.FactureID})">
-                                    <i class="fas fa-check"></i> Marquer Payée
-                                </button>
-                            </td>
-                        </tr>
-                    `).join('');
-                }
-            } catch (error) {
-                console.error('Erreur recouvrement:', error);
-                showToast('Erreur chargement recouvrement', 'error');
-            }
-        }
-
-        // Marquer comme payée
-        async function markAsPaid(factureID) {
-            if (!confirm('Marquer cette facture comme payée ?')) {
-                return;
-            }
-            
-            try {
-                const response = await fetch('api-recouvrement.php', {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ id: factureID })
-                });
-                
-                const result = await response.json();
-                
-                if (result.success) {
-                    showToast('Facture marquée comme payée!');
-                    await loadRecouvrement();
-                } else {
-                    showToast('Erreur: ' + result.message, 'error');
-                }
-            } catch (error) {
-                console.error('Erreur paiement facture:', error);
-                showToast('Erreur lors du traitement', 'error');
-            }
-        }
-
-        // Initialisation
-        document.addEventListener('DOMContentLoaded', function() {
-            setupNavigation();
-            loadClientsForOrders();
-            loadDashboard();
-            
-            // Charger les données initiales
-            loadClients();
-            loadOrders();
-            loadRecouvrement();
-        });
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
